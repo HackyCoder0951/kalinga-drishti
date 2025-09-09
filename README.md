@@ -1,73 +1,192 @@
-# Welcome to your Lovable project
+# Traffic Management Command Center
 
-## Project info
+A modern, real-time traffic management system designed for professional command center operations. Built with React, TypeScript, and Tailwind CSS.
 
-**URL**: https://lovable.dev/projects/25d5e139-5a44-4693-839a-99a1a86b0964
+## 🚦 System Overview
 
-## How can I edit this code?
+This application implements a sophisticated "Launcher Dashboard" architecture, allowing operators to open dedicated monitoring windows across multiple displays - perfect for command center setups.
 
-There are several ways of editing your application.
+### Key Features
 
-**Use Lovable**
+- **🎯 Launcher Dashboard**: Central control panel with system metrics and module launchers
+- **🗺️ Live Traffic Map**: Real-time traffic signals and incident monitoring
+- **📹 Camera Grid**: 16-feed video monitoring system with status indicators  
+- **🚨 Alerts Console**: AI-powered incident management with automated response planning
+- **📋 Violation Logs**: Traffic infringement tracking with evidence management
+- **📊 Multi-Monitor Support**: Each module opens in dedicated windows for optimal operator workflow
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/25d5e139-5a44-4693-839a-99a1a86b0964) and start prompting.
+## 🎨 Design System
 
-Changes made via Lovable will be committed automatically to this repo.
+Professional dark-theme command center interface featuring:
+- **Color-coded severity levels** (Green/Yellow/Red for traffic signals)
+- **Real-time status indicators** with smooth animations
+- **Professional gradients and shadows** optimized for 24/7 operations
+- **Semantic design tokens** ensuring consistent styling across all components
 
-**Use your preferred IDE**
+## 🚀 Quick Start
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+```bash
+# Install dependencies
+npm install
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will open at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🏗️ Architecture
 
-**Use GitHub Codespaces**
+### Frontend Structure
+- **Launcher (`/`)**: Main dashboard with stats and module launchers
+- **Map View (`/map`)**: Traffic signals and alerts visualization
+- **Camera Grid (`/cameras`)**: Video monitoring interface
+- **Alerts Console (`/alerts`)**: Incident management system
+- **Violations View (`/violations`)**: Traffic enforcement tracking
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Multi-Window Operation
+Click "Launch" buttons on the main dashboard to open dedicated windows:
+```javascript
+window.open('/map', 'MapViewWindow', 'width=1200,height=800...')
+```
 
-## What technologies are used for this project?
+Perfect for spreading across multiple monitors in a command center setup.
 
-This project is built with:
+## 🔧 Backend Integration Required
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+This is currently a **frontend-only prototype** with mock data. For full functionality, you need to connect to Supabase:
 
-## How can I deploy this project?
+### 🎯 Why Supabase?
+- **Real-time WebSocket connections** for live traffic updates
+- **PostgreSQL with PostGIS** for geospatial traffic signal coordinates  
+- **Secure API endpoints** for alert management and violation tracking
+- **Edge Functions** for AI integration (Gemini API) and external services
 
-Simply open [Lovable](https://lovable.dev/projects/25d5e139-5a44-4693-839a-99a1a86b0964) and click on Share -> Publish.
+### 🚀 Connect to Supabase
 
-## Can I connect a custom domain to my Lovable project?
+1. **Click the green Supabase button** in the top-right of your Lovable interface
+2. **Connect your Supabase project** or create a new one
+3. **Supabase will automatically provision**:
+   - Real-time database tables for traffic data
+   - WebSocket subscriptions for live updates
+   - Edge functions for AI response generation
+   - Secure secret management for API keys
 
-Yes, you can!
+[📖 Supabase Integration Guide](https://docs.lovable.dev/integrations/supabase/)
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🎯 Required Backend Features
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Once Supabase is connected, the system will need:
+
+### Database Schema
+```sql
+-- Traffic signals with real-time status
+CREATE TABLE traffic_signals (
+  id TEXT PRIMARY KEY,
+  location TEXT,
+  coordinates POINT,
+  status TEXT CHECK (status IN ('green', 'yellow', 'red')),
+  last_update TIMESTAMP
+);
+
+-- Real-time alerts and incidents  
+CREATE TABLE alerts (
+  id TEXT PRIMARY KEY,
+  type TEXT,
+  severity TEXT CHECK (severity IN ('high', 'medium', 'low')),
+  location TEXT,
+  coordinates POINT,
+  description TEXT,
+  status TEXT CHECK (status IN ('pending', 'acknowledged', 'escalated', 'resolved')),
+  created_at TIMESTAMP
+);
+
+-- Traffic violations with evidence
+CREATE TABLE violations (
+  id TEXT PRIMARY KEY,
+  license_plate TEXT,
+  violation_type TEXT,
+  timestamp TIMESTAMP,
+  location TEXT,
+  camera_id TEXT,
+  evidence_urls TEXT[],
+  status TEXT
+);
+```
+
+### WebSocket Channels
+- `traffic_signals` - Real-time signal status updates
+- `alerts` - Live incident notifications
+- `violations` - New violation detections
+
+### AI Integration
+Edge function for Gemini API integration:
+```javascript
+// Supabase Edge Function: generate-action-plan
+const response = await fetch('https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${GEMINI_API_KEY}`,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    contents: [{
+      parts: [{ text: `Generate emergency response plan for: ${alertDetails}` }]
+    }]
+  })
+});
+```
+
+## 🔒 Security Considerations
+
+- **Row Level Security (RLS)** for operator access control
+- **API key management** through Supabase secrets
+- **Real-time data encryption** for sensitive traffic information
+- **Audit logging** for all operator actions
+
+## 🛠️ Technology Stack
+
+- **React 18** with TypeScript
+- **Tailwind CSS** with custom design system
+- **Shadcn/ui** components (heavily customized)
+- **Lucide React** icons
+- **React Router** for multi-window navigation
+- **TanStack Query** for data management
+- **Supabase** for backend infrastructure
+
+## 📱 Browser Compatibility
+
+Optimized for modern browsers in professional environments:
+- Chrome 90+ (Recommended for command centers)
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+
+## 🎯 Deployment
+
+Deploy directly from Lovable:
+1. Click **Publish** in the top-right
+2. Your command center will be available at `yourproject.lovable.app`
+3. Connect custom domain for internal operations
+
+## 📊 Mock Data
+
+Current implementation includes realistic mock data:
+- **5 traffic signals** across Udaipur locations
+- **14 active alerts** with varying severity levels
+- **247 daily violations** with evidence tracking
+- **16 camera feeds** with status monitoring
+
+## 🔮 Future Enhancements
+
+With Supabase backend connected:
+- **Real-time traffic flow analysis**
+- **Predictive congestion modeling** 
+- **Integration with city IoT sensors**
+- **Mobile app for field operators**
+- **Advanced analytics dashboard**
+- **Emergency services coordination**
+
+---
+
+Built with ❤️ using [Lovable](https://lovable.dev) - The fastest way to build web applications
