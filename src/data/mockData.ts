@@ -185,3 +185,31 @@ export const mockMapAlerts = [
     description: "Congestion on Fateh Sagar Road"
   }
 ];
+
+export const mockSystemData = {
+  junctions: [
+    { id: 'J001', name: 'Junction 1', status: 'green', lastUpdate: '2 mins ago' },
+    { id: 'J002', name: 'Junction 2', status: 'red', lastUpdate: '1 min ago' },
+    { id: 'J003', name: 'Junction 3', status: 'yellow', lastUpdate: '3 mins ago' },
+    { id: 'J004', name: 'Junction 4', status: 'green', lastUpdate: '1 min ago' },
+    { id: 'J005', name: 'Junction 5', status: 'green', lastUpdate: '4 mins ago' },
+    { id: 'J006', name: 'Junction 6', status: 'red', lastUpdate: '2 mins ago' },
+    { id: 'J007', name: 'Junction 7', status: 'green', lastUpdate: '5 mins ago' },
+    { id: 'J008', name: 'Junction 8', status: 'yellow', lastUpdate: '1 min ago' },
+  ],
+  networkStatus: [
+    { name: 'Main Server', status: 'Online', latency: '12ms' },
+    { name: 'Backup Server', status: 'Online', latency: '15ms' },
+    { name: 'Camera Network', status: 'Online', latency: '8ms' },
+    { name: 'Signal Network', status: 'Online', latency: '6ms' },
+    { name: 'External API', status: 'Online', latency: '45ms' },
+  ],
+  services: [
+    { name: 'Traffic Monitor', status: 'Running', uptime: '15 days' },
+    { name: 'Alert System', status: 'Running', uptime: '15 days' },
+    { name: 'Database Service', status: 'Running', uptime: '15 days' },
+    { name: 'WebSocket Server', status: 'Running', uptime: '15 days' },
+    { name: 'AI Processing', status: 'Running', uptime: '12 days' },
+    { name: 'Backup Service', status: 'Running', uptime: '15 days' },
+  ]
+};

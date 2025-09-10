@@ -9,6 +9,7 @@ import CameraGrid from "./pages/CameraGrid";
 import AlertsConsole from "./pages/AlertsConsole";
 import ViolationsView from "./pages/ViolationsView";
 import AnalyticsView from "./pages/AnalyticsView";
+import SystemControls from "./pages/SystemControls";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/alerts" element={<AlertsConsole />} />
           <Route path="/violations" element={<ViolationsView />} />
           <Route path="/analytics" element={<AnalyticsView />} />
+          <Route path="/systemcontrols" element={<SystemControls />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
