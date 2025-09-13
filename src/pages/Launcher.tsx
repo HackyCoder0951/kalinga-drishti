@@ -127,7 +127,7 @@ export default function Launcher() {
                 title="System Control"
                 description="Network monitoring, device management, and system configuration"
                 icon={Zap}
-                onClick={() => openModule('/system', 'SystemControlWindow')}
+                onClick={() => openModule('/SystemControls', 'SystemControls')}
               />
             </div>
           </div>
