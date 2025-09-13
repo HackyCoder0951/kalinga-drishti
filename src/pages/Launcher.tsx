@@ -13,6 +13,7 @@ import {
   Zap
 } from "lucide-react";
 import { mockStats, mockAlerts } from "@/data/mockData";
+import SystemControls from "@/pages/SystemControls";
 
 export default function Launcher() {
   const openModule = (path: string, windowName: string) => {
@@ -127,7 +128,7 @@ export default function Launcher() {
                 title="System Control"
                 description="Network monitoring, device management, and system configuration"
                 icon={Zap}
-                onClick={() => openModule('/SystemControls', 'SystemControls')}
+                onClick={() => openModule('/systemcontrols', 'SystemControls')}
               />
             </div>
           </div>
