@@ -6,6 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Settings, 
   Power, 
@@ -23,28 +24,62 @@ import {
 import { mockSystemData } from "@/data/mockData";
 
 export default function SystemControls() {
+  const { toast } = useToast();
   const [emergencyMode, setEmergencyMode] = useState(false);
   const [maintenanceMode, setMaintenanceMode] = useState(false);
   const [autoSignalControl, setAutoSignalControl] = useState(true);
+  const [alertNotifications, setAlertNotifications] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
+  const [soundAlerts, setSoundAlerts] = useState(false);
+  const [junctionStates, setJunctionStates] = useState<Record<string, string>>({});
 
   const handleEmergencyToggle = () => {
     setEmergencyMode(!emergencyMode);
-    // In real implementation, this would trigger emergency protocols
+    toast({
+      title: emergencyMode ? "Emergency Mode Disabled" : "Emergency Mode Activated",
+      description: emergencyMode 
+        ? "System returned to normal operations" 
+        : "All signals locked, emergency protocols active",
+      variant: emergencyMode ? "default" : "destructive",
+    });
   };
 
   const handleMaintenanceToggle = () => {
     setMaintenanceMode(!maintenanceMode);
-    // In real implementation, this would enable maintenance mode
+    toast({
+      title: maintenanceMode ? "Maintenance Mode Disabled" : "Maintenance Mode Enabled",
+      description: maintenanceMode 
+        ? "Automatic controls re-enabled" 
+        : "Automatic controls disabled for maintenance",
+    });
   };
 
   const handleSignalOverride = (junctionId: string, action: string) => {
-    console.log(`Signal override: Junction ${junctionId} - ${action}`);
-    // In real implementation, this would send commands to traffic signals
+    setJunctionStates(prev => ({ ...prev, [junctionId]: action }));
+    toast({
+      title: "Signal Override",
+      description: `Junction ${junctionId} signal set to ${action.toUpperCase()}`,
+    });
+  };
+
+  const handleEmergencyAction = (action: string) => {
+    toast({
+      title: "Emergency Action",
+      description: `${action} command executed`,
+      variant: "destructive",
+    });
+  };
+
+  const handleSystemAction = (action: string) => {
+    toast({
+      title: "System Action",
+      description: `${action} completed successfully`,
+    });
   };
 
   return (
-    <div className="min-h-screen bg-background p-6 pb-20">
-      <div className="max-w-7xl mx-auto space-y-6 relative z-10">
+    <div className="min-h-screen bg-gradient-to-br from-background via-accent/20 to-primary/10 p-3 sm:p-6 pb-20">
+      <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6 relative z-10">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
@@ -63,21 +98,21 @@ export default function SystemControls() {
         </div>
 
         <Tabs defaultValue="signals" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="signals">Signal Control</TabsTrigger>
-            <TabsTrigger value="system">System Status</TabsTrigger>
-            <TabsTrigger value="emergency">Emergency</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1">
+            <TabsTrigger value="signals" className="text-xs sm:text-sm">Signal Control</TabsTrigger>
+            <TabsTrigger value="system" className="text-xs sm:text-sm">System Status</TabsTrigger>
+            <TabsTrigger value="emergency" className="text-xs sm:text-sm">Emergency</TabsTrigger>
+            <TabsTrigger value="settings" className="text-xs sm:text-sm">Settings</TabsTrigger>
           </TabsList>
 
           {/* Signal Control Tab */}
-          <TabsContent value="signals" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <TabsContent value="signals" className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               {/* Auto Control Panel */}
-              <Card>
+              <Card className="bg-gradient-to-br from-card to-accent/10 border-2 hover:border-primary/20 transition-smooth">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Settings className="h-5 w-5" />
+                    <Settings className="h-5 w-5 text-primary" />
                     Automatic Control
                   </CardTitle>
                   <CardDescription>
@@ -89,14 +124,22 @@ export default function SystemControls() {
                     <span className="text-sm font-medium">Auto Signal Control</span>
                     <Switch 
                       checked={autoSignalControl} 
-                      onCheckedChange={setAutoSignalControl}
+                      onCheckedChange={(checked) => {
+                        setAutoSignalControl(checked);
+                        toast({
+                          title: checked ? "Auto Control Enabled" : "Auto Control Disabled",
+                          description: checked 
+                            ? "AI optimization is now active" 
+                            : "Manual control is now active",
+                        });
+                      }}
                     />
                   </div>
                   <Separator />
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Optimization Level</span>
-                      <span className="font-medium">87%</span>
+                      <span className="font-medium text-primary">87%</span>
                     </div>
                     <Progress value={87} className="h-2" />
                   </div>
@@ -104,10 +147,10 @@ export default function SystemControls() {
               </Card>
 
               {/* Manual Overrides */}
-              <Card>
+              <Card className="bg-gradient-to-br from-card to-warning/5 border-2 hover:border-warning/20 transition-smooth">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Power className="h-5 w-5" />
+                    <Power className="h-5 w-5 text-warning" />
                     Manual Overrides
                   </CardTitle>
                   <CardDescription>
@@ -115,23 +158,25 @@ export default function SystemControls() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {mockSystemData.junctions.slice(0, 4).map((junction) => (
-                      <div key={junction.id} className="p-3 border rounded-lg space-y-2">
+                      <div key={junction.id} className="p-3 border rounded-lg space-y-2 bg-muted/20 hover:bg-muted/40 transition-smooth">
                         <div className="flex items-center justify-between">
                           <span className="text-sm font-medium">{junction.name}</span>
                           <Badge 
-                            variant={junction.status === 'green' ? 'default' : 
-                                   junction.status === 'yellow' ? 'secondary' : 'destructive'}
+                            variant={
+                              (junctionStates[junction.id] || junction.status) === 'green' ? 'default' : 
+                              (junctionStates[junction.id] || junction.status) === 'yellow' ? 'secondary' : 'destructive'
+                            }
                             className="text-xs"
                           >
-                            {junction.status.toUpperCase()}
+                            {(junctionStates[junction.id] || junction.status).toUpperCase()}
                           </Badge>
                         </div>
                         <div className="flex gap-1">
                           <Button 
                             size="sm" 
-                            variant="outline" 
+                            variant={(junctionStates[junction.id] || junction.status) === 'green' ? 'default' : 'outline'}
                             className="flex-1 text-xs"
                             onClick={() => handleSignalOverride(junction.id, 'green')}
                           >
@@ -139,7 +184,7 @@ export default function SystemControls() {
                           </Button>
                           <Button 
                             size="sm" 
-                            variant="outline" 
+                            variant={(junctionStates[junction.id] || junction.status) === 'red' ? 'destructive' : 'outline'}
                             className="flex-1 text-xs"
                             onClick={() => handleSignalOverride(junction.id, 'red')}
                           >
@@ -160,14 +205,14 @@ export default function SystemControls() {
                 <CardDescription>Real-time status of all traffic junctions</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {mockSystemData.junctions.map((junction) => (
-                    <div key={junction.id} className="p-4 border rounded-lg hover:bg-muted/50 transition-smooth">
+                    <div key={junction.id} className="p-4 border rounded-lg hover:bg-primary/5 transition-smooth bg-gradient-to-br from-card to-accent/5">
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-medium text-sm">{junction.name}</span>
-                        <div className={`w-3 h-3 rounded-full ${
-                          junction.status === 'green' ? 'bg-green-500' :
-                          junction.status === 'yellow' ? 'bg-yellow-500' : 'bg-red-500'
+                        <div className={`w-3 h-3 rounded-full animate-pulse ${
+                          (junctionStates[junction.id] || junction.status) === 'green' ? 'bg-success shadow-success' :
+                          (junctionStates[junction.id] || junction.status) === 'yellow' ? 'bg-warning shadow-warning' : 'bg-destructive shadow-destructive'
                         }`} />
                       </div>
                       <div className="text-xs text-muted-foreground mb-3">
@@ -176,7 +221,7 @@ export default function SystemControls() {
                       <Button 
                         size="sm" 
                         variant="outline" 
-                        className="w-full text-xs"
+                        className="w-full text-xs hover:bg-primary hover:text-primary-foreground transition-smooth"
                         onClick={() => handleSignalOverride(junction.id, 'override')}
                       >
                         Override Control
@@ -189,13 +234,13 @@ export default function SystemControls() {
           </TabsContent>
 
           {/* System Status Tab */}
-          <TabsContent value="system" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <TabsContent value="system" className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {/* Server Status */}
-              <Card>
+              <Card className="bg-gradient-to-br from-card to-success/5 border-2 hover:border-success/20 transition-smooth">
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <Server className="h-5 w-5" />
+                    <Server className="h-5 w-5 text-success" />
                     Server Health
                   </CardTitle>
                 </CardHeader>
@@ -343,19 +388,35 @@ export default function SystemControls() {
                 <Separator />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Button variant="destructive" className="flex items-center gap-2">
+                  <Button 
+                    variant="destructive" 
+                    className="flex items-center gap-2 hover:scale-105 transition-smooth"
+                    onClick={() => handleEmergencyAction("All Signals Red")}
+                  >
                     <AlertTriangle className="h-4 w-4" />
                     All Signals Red
                   </Button>
-                  <Button variant="outline" className="flex items-center gap-2">
+                  <Button 
+                    variant="outline" 
+                    className="flex items-center gap-2 hover:scale-105 transition-smooth"
+                    onClick={() => handleEmergencyAction("Lock All Controls")}
+                  >
                     <Shield className="h-4 w-4" />
                     Lock All Controls
                   </Button>
-                  <Button variant="outline" className="flex items-center gap-2">
+                  <Button 
+                    variant="outline" 
+                    className="flex items-center gap-2 hover:scale-105 transition-smooth"
+                    onClick={() => handleEmergencyAction("System Alert")}
+                  >
                     <Bell className="h-4 w-4" />
                     System Alert
                   </Button>
-                  <Button variant="outline" className="flex items-center gap-2">
+                  <Button 
+                    variant="outline" 
+                    className="flex items-center gap-2 hover:scale-105 transition-smooth"
+                    onClick={() => handleEmergencyAction("Notify Operators")}
+                  >
                     <Users className="h-4 w-4" />
                     Notify Operators
                   </Button>
@@ -379,15 +440,33 @@ export default function SystemControls() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Alert notifications</span>
-                    <Switch defaultChecked />
+                    <Switch 
+                      checked={alertNotifications} 
+                      onCheckedChange={(checked) => {
+                        setAlertNotifications(checked);
+                        handleSystemAction(checked ? "Enabled alert notifications" : "Disabled alert notifications");
+                      }}
+                    />
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Dark mode</span>
-                    <Switch defaultChecked />
+                    <Switch 
+                      checked={darkMode} 
+                      onCheckedChange={(checked) => {
+                        setDarkMode(checked);
+                        handleSystemAction(checked ? "Enabled dark mode" : "Enabled light mode");
+                      }}
+                    />
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm">Sound alerts</span>
-                    <Switch />
+                    <Switch 
+                      checked={soundAlerts} 
+                      onCheckedChange={(checked) => {
+                        setSoundAlerts(checked);
+                        handleSystemAction(checked ? "Enabled sound alerts" : "Disabled sound alerts");
+                      }}
+                    />
                   </div>
                 </CardContent>
               </Card>
