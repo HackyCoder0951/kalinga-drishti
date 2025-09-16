@@ -154,20 +154,6 @@ const response = await fetch('https://generativelanguage.googleapis.com/v1/model
 - **TanStack Query** for data management
 - **Supabase** for backend infrastructure
 
-## 📱 Browser Compatibility
-
-Optimized for modern browsers in professional environments:
-- Chrome 90+ (Recommended for command centers)
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-
-## 🎯 Deployment
-
-Deploy directly from Lovable:
-1. Click **Publish** in the top-right
-2. Your command center will be available at `yourproject.lovable.app`
-3. Connect custom domain for internal operations
 
 ## 📊 Mock Data
 
@@ -188,5 +174,3 @@ With Supabase backend connected:
 - **Emergency services coordination**
 
 ---
-
-Built with ❤️ using [Lovable](https://lovable.dev) - The fastest way to build web applications
