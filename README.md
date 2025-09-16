@@ -172,7 +172,7 @@ Deploy directly from Lovable:
 ## 📊 Mock Data
 
 Current implementation includes realistic mock data:
-- **5 traffic signals** across Udaipur locations
+- **5 traffic signals** across Bhubaneshwar locations
 - **14 active alerts** with varying severity levels
 - **247 daily violations** with evidence tracking
 - **16 camera feeds** with status monitoring

@@ -34,7 +34,7 @@ export default function Launcher() {
               Traffic Management Command Center
             </h1>
             <p className="text-muted-foreground text-lg">
-              Udaipur City • Operator: Traffic Control Unit
+              Odisha State • Operator: Traffic Control Unit
             </p>
           </div>
           <div className="text-right">
@@ -58,7 +58,7 @@ export default function Launcher() {
             subtitle="Traffic infractions detected"
           />
           <StatCard
-            title="Congestion Score"
+            title="Congestion Reduction Score"
             value={mockStats.congestionScore.value}
             icon={BarChart3}
             variant="critical"
@@ -91,42 +91,48 @@ export default function Launcher() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <LauncherButton
                 title="Live Traffic Map"
-                description="Real-time traffic signals, alerts, and road conditions across Udaipur"
+                  description="Real-time traffic signals, alerts, and road conditions across Odisha cities"
+                  // className="line-clamp-2 text-ellipsis overflow-hidden"
                 icon={Map}
                 onClick={() => openModule('/map', 'TrafficMapWindow')}
               />
               
               <LauncherButton
                 title="Camera Grid"
-                description="Live video feeds from all traffic monitoring cameras and junctions"
+                  description="Live video feeds from all traffic monitoring cameras and junctions"
+                  // className="line-clamp-2 text-ellipsis overflow-hidden"
                 icon={Camera}
                 onClick={() => openModule('/cameras', 'CameraGridWindow')}
               />
               
               <LauncherButton
                 title="Alerts Console"
-                description="Active incident management and AI-powered response planning"
+                  description="Active incident management and AI-powered response planning"
+                  // className="line-clamp-2 text-ellipsis overflow-hidden"
                 icon={AlertTriangle}
                 onClick={() => openModule('/alerts', 'AlertsConsoleWindow')}
               />
               
               <LauncherButton
                 title="Violation Logs"
-                description="Traffic infringement records, evidence, and enforcement tracking"
+                  description="Traffic infringement records, evidence, and enforcement tracking"
+                  // className="line-clamp-2 text-ellipsis overflow-hidden"
                 icon={FileText}
                 onClick={() => openModule('/violations', 'ViolationLogsWindow')}
               />
               
               <LauncherButton
                 title="Analytics Dashboard"
-                description="Traffic patterns, performance metrics, and operational insights"
+                  description="Traffic patterns, performance metrics, and operational insights"
+                  // className="line-clamp-2 text-ellipsis overflow-hidden"
                 icon={BarChart3}
                 onClick={() => openModule('/analytics', 'AnalyticsWindow')}
               />
               
               <LauncherButton
                 title="System Control"
-                description="Network monitoring, device management, and system configuration"
+                  description="Network monitoring, device management, and system configuration"
+                  // className="line-clamp-2 text-ellipsis overflow-hidden"
                 icon={Zap}
                 onClick={() => openModule('/systemcontrols', 'SystemControls')}
               />

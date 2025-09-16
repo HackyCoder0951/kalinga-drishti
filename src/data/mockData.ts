@@ -111,14 +111,14 @@ export const mockCameras = [
   { id: "CAM-006", name: "Junction 3 - Southbound", status: "warning" as const },
   { id: "CAM-007", name: "Junction 4 - Eastbound", status: "online" as const },
   { id: "CAM-008", name: "Junction 4 - Westbound", status: "online" as const },
-  { id: "CAM-009", name: "NH-8 Speed Camera", status: "online" as const },
-  { id: "CAM-010", name: "City Palace Junction", status: "online" as const },
-  { id: "CAM-011", name: "Fateh Sagar Monitoring", status: "online" as const },
-  { id: "CAM-012", name: "Suraj Pole Camera", status: "warning" as const },
-  { id: "CAM-013", name: "Chetak Circle Monitor", status: "online" as const },
-  { id: "CAM-014", name: "University Road Cam", status: "online" as const },
-  { id: "CAM-015", name: "Delhi Gate Flyover", status: "online" as const },
-  { id: "CAM-016", name: "Hiran Magri Sector", status: "online" as const }
+  { id: "CAM-009", name: "Junction 5 - Eastbound", status: "online" as const },
+  { id: "CAM-010", name: "Junction 5 - Westbound", status: "online" as const },
+  { id: "CAM-011", name: "Junction 6 - Northbound", status: "online" as const },
+  { id: "CAM-012", name: "Junction 6 - Southbound", status: "warning" as const },
+  { id: "CAM-013", name: "Junction 7 - Eastbound", status: "online" as const },
+  { id: "CAM-014", name: "Junction 7 - Westbound", status: "online" as const },
+  { id: "CAM-016", name: "Junction 8 - Northbound", status: "online" as const },
+  { id: "CAM-015", name: "Junction 8 - Southbound", status: "online" as const },
 ];
 
 export const mockTrafficSignals = [
@@ -131,28 +131,28 @@ export const mockTrafficSignals = [
   },
   {
     id: "SIG-002",
-    location: "Suraj Pole",
+    location: "Suraj vihar",
     coordinates: { lat: 24.5804, lng: 73.6833 },
     status: "red" as const,
     lastUpdate: "2024-01-15T14:24:45Z"
   },
   {
     id: "SIG-003", 
-    location: "Delhi Gate",
+    location: "Gate circle",
     coordinates: { lat: 24.5916, lng: 73.6852 },
     status: "yellow" as const,
     lastUpdate: "2024-01-15T14:24:30Z"
   },
   {
     id: "SIG-004",
-    location: "Fateh Sagar Junction",
+    location: "Fateh Junction",
     coordinates: { lat: 24.5908, lng: 73.6758 },
     status: "green" as const, 
     lastUpdate: "2024-01-15T14:25:10Z"
   },
   {
     id: "SIG-005",
-    location: "City Palace Junction",
+    location: "City Junction",
     coordinates: { lat: 24.5764, lng: 73.6833 },
     status: "red" as const,
     lastUpdate: "2024-01-15T14:24:15Z"

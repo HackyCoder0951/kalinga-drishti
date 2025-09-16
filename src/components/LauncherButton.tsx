@@ -37,7 +37,7 @@ export function LauncherButton({
           </h3>
         </div>
       </div>
-      <p className="text-sm text-muted-foreground group-hover:text-white/70 transition-smooth">
+      <p className="text-sm text-muted-foreground group-hover:text-white/70 transition-smooth line-clamp-2 overflow-hidden">
         {description}
       </p>
     </Button>

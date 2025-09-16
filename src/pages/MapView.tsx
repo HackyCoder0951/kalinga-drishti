@@ -36,7 +36,7 @@ export default function MapView() {
         <div className="flex items-center gap-3">
           <MapIcon className="h-6 w-6 text-primary" />
           <h1 className="text-xl font-semibold text-foreground">Live Traffic Map</h1>
-          <Badge variant="outline" className="ml-2">Udaipur City</Badge>
+          <Badge variant="outline" className="ml-2">Bhubaneshwar City</Badge>
         </div>
         
         <div className="flex items-center gap-3">
@@ -88,7 +88,7 @@ export default function MapView() {
             </svg>
           </div>
 
-          {/* Udaipur Map Simulation */}
+          {/* Bhubaneshwar Map Simulation */}
           <div className="absolute inset-0 p-8">
             <div className="relative w-full h-full">
               {/* Traffic Signals */}
